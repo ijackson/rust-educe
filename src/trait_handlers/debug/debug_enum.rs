@@ -2,8 +2,11 @@ use quote::{format_ident, quote, ToTokens};
 use syn::{Data, DeriveInput, Fields, Meta, Type};
 
 use super::models::{FieldAttributeBuilder, FieldName, TypeAttributeBuilder, TypeName};
-use crate::{common::path::path_to_string, supported_traits::Trait, trait_handlers::TraitHandler};
-use crate::common::ident_index::IdentOrIndex;
+use crate::{
+    common::{ident_index::IdentOrIndex, path::path_to_string},
+    supported_traits::Trait,
+    trait_handlers::TraitHandler,
+};
 
 pub(crate) struct DebugEnumHandler;
 

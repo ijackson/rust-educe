@@ -63,7 +63,8 @@ impl TraitHandler for DebugStructHandler {
                         continue;
                     }
 
-                    let field_name = IdentOrIndex::from_ident_with_index(field.ident.as_ref(), index);
+                    let field_name =
+                        IdentOrIndex::from_ident_with_index(field.ident.as_ref(), index);
                     let key: IdentOrIndex = match field_attribute.name {
                         FieldName::Custom(name) => name.into(),
                         FieldName::Default => field_name.clone(),
