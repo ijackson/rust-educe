@@ -1,3 +1,5 @@
+#![allow(dead_code)] // XXXX
+
 use quote::quote;
 use syn::{punctuated::Punctuated, Data, DeriveInput, Field, Fields, Index, Meta, Type};
 

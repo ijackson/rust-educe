@@ -1,9 +1,9 @@
 use quote::{format_ident, quote};
-use syn::{punctuated::Punctuated, Data, DeriveInput, Meta, Type};
+use syn::{DeriveInput, Meta, Type};
 
 use super::models::{FieldAttribute, FieldAttributeBuilder, TypeAttributeBuilder};
 use crate::{
-    common::where_predicates_bool::WherePredicates, supported_traits::Trait, TraitHandler,
+    supported_traits::Trait, TraitHandler,
     common::field_info::FieldInfo,
     common::variant_info::VariantInfo,
 };
@@ -23,12 +23,12 @@ impl TraitHandler for CloneEnumHandler {
         }
         .build_from_clone_meta(meta)?;
 
-        let mut bound: WherePredicates = Punctuated::new();
+        let bound;
 
         let mut clone_token_stream = proc_macro2::TokenStream::new();
         let mut clone_from_token_stream = proc_macro2::TokenStream::new();
 
-        if let Data::Enum(_) = &ast.data {
+        {
             type Variants<'a> = Vec<(VariantInfo<'a>, Vec<(FieldInfo<'a>, FieldAttribute)>)>;
 
             let mut variants: Variants = Vec::new();
