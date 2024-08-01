@@ -24,16 +24,6 @@ pub(crate) mod expr;
 ))]
 #[allow(dead_code)]
 pub(crate) mod ident_bool;
-#[cfg(any(
-    feature = "Debug",
-    feature = "PartialEq",
-    feature = "PartialOrd",
-    feature = "Ord",
-    feature = "Hash",
-    feature = "Deref",
-    feature = "DerefMut",
-    feature = "Into"
-))]
 #[allow(dead_code)]
 pub(crate) mod ident_index;
 #[cfg(any(feature = "PartialOrd", feature = "Ord"))]
