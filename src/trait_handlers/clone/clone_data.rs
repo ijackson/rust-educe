@@ -8,9 +8,9 @@ use crate::{
     common::variant_info::VariantInfo,
 };
 
-pub(crate) struct CloneEnumHandler;
+pub(crate) struct CloneDataHandler;
 
-impl TraitHandler for CloneEnumHandler {
+impl TraitHandler for CloneDataHandler {
     #[inline]
     fn trait_meta_handler(
         ast: &DeriveInput,
