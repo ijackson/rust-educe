@@ -1,9 +1,10 @@
 use quote::{format_ident, quote};
-use syn::{punctuated::Punctuated, Data, DeriveInput, Field, Fields, Meta, Type, Variant};
+use syn::{punctuated::Punctuated, Data, DeriveInput, Fields, Meta, Type, Variant};
 
 use super::models::{FieldAttribute, FieldAttributeBuilder, TypeAttributeBuilder};
 use crate::{
     common::where_predicates_bool::WherePredicates, supported_traits::Trait, TraitHandler,
+    common::field_info::FieldInfo,
 };
 
 pub(crate) struct CloneEnumHandler;
@@ -27,7 +28,7 @@ impl TraitHandler for CloneEnumHandler {
         let mut clone_from_token_stream = proc_macro2::TokenStream::new();
 
         if let Data::Enum(data) = &ast.data {
-            type Variants<'a> = Vec<(&'a Variant, Vec<(&'a Field, FieldAttribute)>)>;
+            type Variants<'a> = Vec<(&'a Variant, Vec<(FieldInfo<'a>, FieldAttribute)>)>;
 
             let mut variants: Variants = Vec::new();
 
@@ -40,9 +41,9 @@ impl TraitHandler for CloneEnumHandler {
                 }
                 .build_from_attributes(&variant.attrs, traits)?;
 
-                let mut variant_fields: Vec<(&Field, FieldAttribute)> = Vec::new();
+                let mut variant_fields: Vec<(FieldInfo, FieldAttribute)> = Vec::new();
 
-                for field in variant.fields.iter() {
+                for (index, field) in variant.fields.iter().enumerate() {
                     let field_attribute = FieldAttributeBuilder {
                         enable_method: true
                     }
@@ -53,7 +54,7 @@ impl TraitHandler for CloneEnumHandler {
                         has_custom_clone_method = true;
                     }
 
-                    variant_fields.push((field, field_attribute));
+                    variant_fields.push((FieldInfo::new(index, field), field_attribute));
                 }
 
                 variants.push((variant, variant_fields));
@@ -105,7 +106,7 @@ impl TraitHandler for CloneEnumHandler {
                             let mut cf_body_token_stream = proc_macro2::TokenStream::new();
 
                             for (field, field_attribute) in variant_fields {
-                                let field_name_real = field.ident.as_ref().unwrap();
+                                let field_name_real = &field.name;
                                 let field_name_src = format_ident!("_s_{}", field_name_real);
                                 let field_name_dst = format_ident!("_d_{}", field_name_real);
 
@@ -153,10 +154,8 @@ impl TraitHandler for CloneEnumHandler {
                             let mut fields_token_stream = proc_macro2::TokenStream::new();
                             let mut body_token_stream = proc_macro2::TokenStream::new();
 
-                            for (index, (field, field_attribute)) in
-                                variant_fields.into_iter().enumerate()
-                            {
-                                let field_name_src = format_ident!("_{}", index);
+                            for (field, field_attribute) in variant_fields {
+                                let field_name_src = format_ident!("_{}", field.name);
 
                                 pattern_token_stream.extend(quote!(#field_name_src,));
 

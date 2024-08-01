@@ -1,6 +1,8 @@
 #[allow(dead_code)]
 pub(crate) mod bound;
 #[allow(dead_code)]
+pub(crate) mod field_info;
+#[allow(dead_code)]
 pub(crate) mod path;
 #[allow(dead_code)]
 pub(crate) mod r#type;
