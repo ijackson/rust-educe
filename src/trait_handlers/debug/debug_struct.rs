@@ -1,4 +1,4 @@
-use quote::{format_ident, quote};
+use quote::quote;
 use syn::{Data, DeriveInput, Fields, Meta, Type};
 
 use super::{
@@ -64,17 +64,9 @@ impl TraitHandler for DebugStructHandler {
                     }
 
                     let field_name = IdentOrIndex::from_ident_with_index(field.ident.as_ref(), index);
-                    let key = match field_attribute.name {
-                        FieldName::Custom(name) => {
-                            name
-                        },
-                        FieldName::Default => {
-                            if let Some(ident) = field.ident.as_ref() {
-                                ident.clone()
-                            } else {
-                                format_ident!("_{}", index)
-                            }
-                        },
+                    let key: IdentOrIndex = match field_attribute.name {
+                        FieldName::Custom(name) => name.into(),
+                        FieldName::Default => field_name.clone(),
                     };
 
                     let ty = &field.ty;

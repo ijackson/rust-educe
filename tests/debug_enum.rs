@@ -253,7 +253,7 @@ fn named_field_1() {
             f1: 1
         })
     );
-    assert_eq!("Tuple { _0: 1 }", format!("{:?}", Enum::Tuple(1)));
+    assert_eq!("Tuple { 0: 1 }", format!("{:?}", Enum::Tuple(1)));
 }
 
 #[test]
@@ -273,7 +273,7 @@ fn named_field_2() {
             f1: 1
         })
     );
-    assert_eq!("Tuple { _0: 1 }", format!("{:?}", Enum::Tuple(1)));
+    assert_eq!("Tuple { 0: 1 }", format!("{:?}", Enum::Tuple(1)));
 }
 
 #[test]
@@ -302,7 +302,7 @@ fn named_field_3() {
             f1: 1
         })
     );
-    assert_eq!("Tuple { _0: Hi }", format!("{:?}", Enum::Tuple(1)));
+    assert_eq!("Tuple { 0: Hi }", format!("{:?}", Enum::Tuple(1)));
 }
 
 #[test]

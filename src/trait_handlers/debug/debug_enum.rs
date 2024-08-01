@@ -3,6 +3,7 @@ use syn::{Data, DeriveInput, Fields, Meta, Type};
 
 use super::models::{FieldAttributeBuilder, FieldName, TypeAttributeBuilder, TypeName};
 use crate::{common::path::path_to_string, supported_traits::Trait, trait_handlers::TraitHandler};
+use crate::common::ident_index::IdentOrIndex;
 
 pub(crate) struct DebugEnumHandler;
 
@@ -219,9 +220,9 @@ impl TraitHandler for DebugEnumHandler {
 
                                 let field_name_var = format_ident!("_{}", index);
 
-                                let key = match field_attribute.name {
-                                    FieldName::Custom(name) => name,
-                                    FieldName::Default => field_name_var.clone(),
+                                let key: IdentOrIndex = match field_attribute.name {
+                                    FieldName::Custom(name) => name.into(),
+                                    FieldName::Default => index.into(),
                                 };
 
                                 pattern_token_stream.extend(quote!(#field_name_var,));

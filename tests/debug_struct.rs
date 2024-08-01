@@ -245,7 +245,7 @@ fn named_field_1() {
     #[educe(Debug(named_field = true))]
     struct Tuple(u8);
 
-    assert_eq!("Tuple { _0: 1 }", format!("{:?}", Tuple(1)));
+    assert_eq!("Tuple { 0: 1 }", format!("{:?}", Tuple(1)));
 }
 
 #[test]
@@ -267,7 +267,7 @@ fn named_field_2() {
     #[educe(Debug(named_field(true)))]
     struct Tuple(u8);
 
-    assert_eq!("Tuple { _0: 1 }", format!("{:?}", Tuple(1)));
+    assert_eq!("Tuple { 0: 1 }", format!("{:?}", Tuple(1)));
 }
 
 #[test]
