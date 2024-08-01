@@ -7,6 +7,8 @@ pub(crate) mod path;
 #[allow(dead_code)]
 pub(crate) mod r#type;
 #[allow(dead_code)]
+pub(crate) mod variant_info;
+#[allow(dead_code)]
 pub(crate) mod where_predicates_bool;
 
 #[cfg(feature = "Default")]
