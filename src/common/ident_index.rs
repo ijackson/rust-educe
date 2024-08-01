@@ -1,6 +1,7 @@
 use quote::ToTokens;
 use syn::{Ident, Index};
 
+#[derive(Clone)]
 pub(crate) enum IdentOrIndex {
     Ident(Ident),
     Index(Index),
