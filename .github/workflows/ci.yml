@@ -99,4 +99,5 @@ jobs:
       - uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
           toolchain: ${{ matrix.toolchain }}
+      - run: cp Cargo.lock.minimal Cargo.lock
       - run: cargo test --lib --bins ${{ matrix.features }}
