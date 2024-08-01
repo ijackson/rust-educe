@@ -63,15 +63,16 @@ impl TraitHandler for DebugStructHandler {
                         continue;
                     }
 
-                    let (key, field_name) = match field_attribute.name {
+                    let field_name = IdentOrIndex::from_ident_with_index(field.ident.as_ref(), index);
+                    let key = match field_attribute.name {
                         FieldName::Custom(name) => {
-                            (name, IdentOrIndex::from_ident_with_index(field.ident.as_ref(), index))
+                            name
                         },
                         FieldName::Default => {
                             if let Some(ident) = field.ident.as_ref() {
-                                (ident.clone(), IdentOrIndex::from(ident))
+                                ident.clone()
                             } else {
-                                (format_ident!("_{}", index), IdentOrIndex::from(index))
+                                format_ident!("_{}", index)
                             }
                         },
                     };
