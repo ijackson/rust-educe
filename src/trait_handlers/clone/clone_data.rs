@@ -37,7 +37,7 @@ impl TraitHandler for CloneDataHandler {
             let _ = TypeAttributeBuilder {
                 enable_flag: false, enable_bound: false
             }
-            .build_from_attributes(&variant.attrs, traits)?;
+            .build_from_attributes(variant.attrs, traits)?;
 
             let mut variant_fields: Vec<(FieldInfo, FieldAttribute)> = Vec::new();
 
