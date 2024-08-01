@@ -3,6 +3,8 @@ pub(crate) mod bound;
 #[allow(dead_code)]
 pub(crate) mod field_info;
 #[allow(dead_code)]
+pub(crate) mod ident_index;
+#[allow(dead_code)]
 pub(crate) mod path;
 #[allow(dead_code)]
 pub(crate) mod r#type;
@@ -24,8 +26,6 @@ pub(crate) mod expr;
 ))]
 #[allow(dead_code)]
 pub(crate) mod ident_bool;
-#[allow(dead_code)]
-pub(crate) mod ident_index;
 #[cfg(any(feature = "PartialOrd", feature = "Ord"))]
 #[allow(dead_code)]
 pub(crate) mod int;
