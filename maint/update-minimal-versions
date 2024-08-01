@@ -1,0 +1,20 @@
+#! /bin/bash
+
+set -e
+set -o pipefail
+
+: "${CARGO:=cargo}"
+
+if test -e Cargo.lock.aside; then
+	rm -f Cargo.lock
+else
+	mv Cargo.lock Cargo.lock.aside
+fi
+
+$CARGO +nightly update  -Z minimal-versions
+
+# assert-eq-float has a too-relaxed dependency and only works with num-traits 0.2.1
+$CARGO update --precise=0.2.1 -p num-traits
+
+mv Cargo.lock Cargo.lock.minimal
+mv Cargo.lock.aside Cargo.lock
