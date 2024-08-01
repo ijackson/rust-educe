@@ -1,5 +1,4 @@
 mod clone_enum;
-mod clone_struct;
 mod clone_union;
 mod models;
 
