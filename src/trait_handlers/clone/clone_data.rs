@@ -3,9 +3,9 @@ use syn::{DeriveInput, Meta, Type};
 
 use super::models::{FieldAttribute, FieldAttributeBuilder, TypeAttributeBuilder};
 use crate::{
-    supported_traits::Trait, TraitHandler,
-    common::field_info::FieldInfo,
-    common::variant_info::VariantInfo,
+    common::{field_info::FieldInfo, variant_info::VariantInfo},
+    supported_traits::Trait,
+    TraitHandler,
 };
 
 pub(crate) struct CloneDataHandler;
@@ -92,18 +92,15 @@ impl TraitHandler for CloneDataHandler {
                     let field_name_src = format_ident!("_s_{}", field_name_real);
                     let field_name_dst = format_ident!("_d_{}", field_name_real);
 
-                    pattern_src_token_stream
-                        .extend(quote!(#field_name_real: #field_name_src,));
-                    pattern_dst_token_stream
-                        .extend(quote!(#field_name_real: #field_name_dst,));
+                    pattern_src_token_stream.extend(quote!(#field_name_real: #field_name_src,));
+                    pattern_dst_token_stream.extend(quote!(#field_name_real: #field_name_dst,));
 
                     if let Some(clone) = field_attribute.method.as_ref() {
                         cl_fields_token_stream.extend(quote! {
                             #field_name_real: #clone(#field_name_src),
                         });
-                        cf_body_token_stream.extend(
-                            quote!(*#field_name_dst = #clone(#field_name_src);),
-                        );
+                        cf_body_token_stream
+                            .extend(quote!(*#field_name_dst = #clone(#field_name_src);));
                     } else {
                         clone_types.push(&field.ty);
 
@@ -121,14 +118,14 @@ impl TraitHandler for CloneDataHandler {
                     });
 
                 clone_from_variants_token_stream.extend(quote! {
-                        Self #variant_sel { #pattern_dst_token_stream } => {
-                            if let Self #variant_sel { #pattern_src_token_stream } = source {
-                                #cf_body_token_stream
-                            } else {
-                                *self = ::core::clone::Clone::clone(source);
-                            }
-                        },
-                    });
+                    Self #variant_sel { #pattern_dst_token_stream } => {
+                        if let Self #variant_sel { #pattern_src_token_stream } = source {
+                            #cf_body_token_stream
+                        } else {
+                            *self = ::core::clone::Clone::clone(source);
+                        }
+                    },
+                });
             }
 
             if !contains_copy {
