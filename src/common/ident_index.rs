@@ -1,4 +1,6 @@
-use quote::ToTokens;
+use std::fmt;
+
+use quote::{IdentFragment, ToTokens};
 use syn::{Ident, Index};
 
 #[derive(Clone)]
@@ -52,6 +54,15 @@ impl IdentOrIndex {
             Self::from(ident)
         } else {
             Self::from(index)
+        }
+    }
+}
+
+impl IdentFragment for IdentOrIndex {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Self::Ident(ident) => IdentFragment::fmt(ident, f),
+            Self::Index(index) => IdentFragment::fmt(index, f),
         }
     }
 }
